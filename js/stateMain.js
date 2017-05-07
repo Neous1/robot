@@ -3,7 +3,7 @@ var StateMain = {
     preload: function () {
         game.load.spritesheet("robot", "images/main/robot.png", 80,111,28);
         game.load.image("tiles","images/tiles.png");
-        game.load.tilemap("map1", "images/maps/map1.json",null,Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap("map1", "maps/map1.json",null,Phaser.Tilemap.TILED_JSON);
 
     },
 
@@ -11,7 +11,6 @@ var StateMain = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         //load map
-        debugger;
         this.map = game.add.tilemap("map1");
         this.map.addTilesetImage("tiles");
 
@@ -34,10 +33,36 @@ var StateMain = {
         this.robot.body.collideWorldBound = true;
 
         game.camera.follow(this.robot);
+        cursors = game.input.keyboard.createCursorKeys();
     },
 
     update: function () {
         game.physics.arcade.collide(this.robot, this.layer);
+        
+        if(Math.abs(this.robot.body.velocity.x)>100){
+            this.robot.animations.play("walk");
+        }
+        else{
+            this.robot.animations.play("idle");
+        }
+        
+        //which way do i face
+        if(this.robot.body.velocity.x > 0){
+            this.robot.scale.x = 1; // facing right
+        }
+        else{
+            this.robot.scale.x = -1;
+        }
+        
+        
+        //which way do i go
+        if(cursors.left.isDown){
+            this.robot.body.velocity.x=-250
+        }
+        
+                if(cursors.right.isDown){
+            this.robot.body.velocity.x=250
+        }
 
     }
 

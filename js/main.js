@@ -1,4 +1,6 @@
 var game;
+var cursors;
+
 window.onload = function()
 {
     if (screen.width>1500)
