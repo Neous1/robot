@@ -1,13 +1,20 @@
 var StateMain = {
 
     preload: function () {
+        
+        var mapPath = "maps/map"+level+".json"
+        
         game.load.spritesheet("robot", "images/main/robot.png", 80,111,28);
         game.load.image("tiles","images/tiles.png");
-        game.load.tilemap("map1", "maps/map1.json",null,Phaser.Tilemap.TILED_JSON);
+        game.load.tilemap("map1", mapPath,null,Phaser.Tilemap.TILED_JSON);
 
     },
 
     create: function () {
+        
+        this.bombCount = [4,9];
+        this.need = this.bombCount[level-1];
+        this.collected = 0;
         
         this.robotSize=.5;
         
@@ -48,6 +55,12 @@ var StateMain = {
     //Functions *************//Functions *************
     gotBomb: function(sprite,tile){
         this.map.removeTile(tile.x,tile.y,this.layer)
+        this.collected ++;
+        console.log("bombs collected: ",this.collected);
+        if(this.collected == this.need){
+            level++;
+            game.state.start("StateMain");
+        }
     },
     
     
